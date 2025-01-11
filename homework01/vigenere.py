@@ -13,19 +13,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     rus_alph = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
     eng_alph = "abcdefghijklmnopqrstuvwxyz"
 
-    def expand(word, key):
-        if len(word) < len(key):
-            return key[: len(word)]
-
-        full = len(word) // len(key)
-        tail = len(word) % len(key)
-
-        output = key * full
-        output += key[:tail]
-
-        return output
-
-    keyword = expand(plaintext, keyword).lower()
+    keyword = keyword * (len(plaintext) // len(keyword)) + keyword[: len(plaintext) % len(keyword)].lower()
 
     for i in range(len(plaintext)):
         try:
@@ -36,11 +24,12 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
         except:
             ciphertext += plaintext[i]
 
-    ciphertext = list(ciphertext)
+    newCiphertext = list(ciphertext)
+
     for i, letter in enumerate(plaintext):
         if not letter.islower():
-            ciphertext[i] = ciphertext[i].upper()
-    ciphertext = "".join(ciphertext)
+            newCiphertext[i] = newCiphertext[i].upper()
+    ciphertext = "".join(newCiphertext)
 
     return ciphertext
 
@@ -60,19 +49,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     rus_alph = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
     eng_alph = "abcdefghijklmnopqrstuvwxyz"
 
-    def expand(word, key):
-        if len(word) < len(key):
-            return key[: len(word)]
-
-        full = len(word) // len(key)
-        tail = len(word) % len(key)
-
-        output = key * full
-        output += key[:tail]
-
-        return output
-
-    keyword = expand(ciphertext, keyword).lower()
+    keyword = keyword * (len(ciphertext) // len(keyword)) + keyword[: len(ciphertext) % len(keyword)].lower()
 
     for i in range(len(ciphertext)):
         try:
@@ -83,10 +60,11 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         except:
             plaintext += ciphertext[i]
 
-    plaintext = list(plaintext)
+    newPlaintext = list(plaintext)
+
     for i, letter in enumerate(ciphertext):
         if not letter.islower():
-            plaintext[i] = plaintext[i].upper()
-    plaintext = "".join(plaintext)
+            newPlaintext[i] = newPlaintext[i].upper()
+    plaintext = "".join(newPlaintext)
 
     return plaintext
