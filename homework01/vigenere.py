@@ -10,15 +10,15 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     ciphertext = ""
 
-    rus_alph = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
-    eng_alph = 'abcdefghijklmnopqrstuvwxyz'
+    rus_alph = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+    eng_alph = "abcdefghijklmnopqrstuvwxyz"
 
     def expand(word, key):
         if len(word) < len(key):
-            return key[:len(word)]
+            return key[: len(word)]
 
-        full = len(word)//len(key)
-        tail = len(word)%len(key)
+        full = len(word) // len(key)
+        tail = len(word) % len(key)
 
         output = key * full
         output += key[:tail]
@@ -30,9 +30,9 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     for i in range(len(plaintext)):
         try:
             if plaintext[i] in rus_alph:
-                ciphertext += rus_alph[(rus_alph.index(plaintext[i].lower())+rus_alph.index(keyword[i].lower()))%33]
+                ciphertext += rus_alph[(rus_alph.index(plaintext[i].lower()) + rus_alph.index(keyword[i].lower())) % 33]
             else:
-                ciphertext += eng_alph[(eng_alph.index(plaintext[i].lower())+eng_alph.index(keyword[i].lower()))%26]
+                ciphertext += eng_alph[(eng_alph.index(plaintext[i].lower()) + eng_alph.index(keyword[i].lower())) % 26]
         except:
             ciphertext += plaintext[i]
 
@@ -40,7 +40,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     for i, letter in enumerate(plaintext):
         if not letter.islower():
             ciphertext[i] = ciphertext[i].upper()
-    ciphertext = ''.join(ciphertext)
+    ciphertext = "".join(ciphertext)
 
     return ciphertext
 
@@ -57,15 +57,15 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     plaintext = ""
 
-    rus_alph = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
-    eng_alph = 'abcdefghijklmnopqrstuvwxyz'
-    
+    rus_alph = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+    eng_alph = "abcdefghijklmnopqrstuvwxyz"
+
     def expand(word, key):
         if len(word) < len(key):
-            return key[:len(word)]
+            return key[: len(word)]
 
-        full = len(word)//len(key)
-        tail = len(word)%len(key)
+        full = len(word) // len(key)
+        tail = len(word) % len(key)
 
         output = key * full
         output += key[:tail]
@@ -77,9 +77,9 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     for i in range(len(ciphertext)):
         try:
             if ciphertext[i] in rus_alph:
-                plaintext += rus_alph[(rus_alph.index(ciphertext[i].lower())-rus_alph.index(keyword[i].lower()))]
+                plaintext += rus_alph[(rus_alph.index(ciphertext[i].lower()) - rus_alph.index(keyword[i].lower()))]
             else:
-                plaintext += eng_alph[(eng_alph.index(ciphertext[i].lower())-eng_alph.index(keyword[i].lower()))]
+                plaintext += eng_alph[(eng_alph.index(ciphertext[i].lower()) - eng_alph.index(keyword[i].lower()))]
         except:
             plaintext += ciphertext[i]
 
@@ -87,8 +87,6 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     for i, letter in enumerate(ciphertext):
         if not letter.islower():
             plaintext[i] = plaintext[i].upper()
-    plaintext = ''.join(plaintext)
-
+    plaintext = "".join(plaintext)
 
     return plaintext
-
