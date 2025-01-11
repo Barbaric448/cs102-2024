@@ -1,3 +1,6 @@
+"""encryp and decrypt caesar"""
+
+
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     Encrypts plaintext using a Caesar cipher.
@@ -20,14 +23,14 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
                 ciphertext += rus_alph[(rus_alph.index(letter.lower()) + shift) % 33]
             else:
                 ciphertext += eng_alph[(eng_alph.index(letter.lower()) + shift) % 26]
-        except:
+        except ValueError:
             ciphertext += letter
 
-    ciphertext = list(ciphertext)
+    newCiphertext = list(ciphertext)
     for i, letter in enumerate(plaintext):
         if not letter.islower():
-            ciphertext[i] = ciphertext[i].upper()
-    ciphertext = "".join(ciphertext)
+            newCiphertext[i] = newCiphertext[i].upper()
+    ciphertext = "".join(newCiphertext)
     return ciphertext
 
 
@@ -53,13 +56,14 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
                 plaintext += rus_alph[(rus_alph.index(letter.lower()) - shift)]
             else:
                 plaintext += eng_alph[(eng_alph.index(letter.lower()) - shift)]
-        except:
+        except ValueError:
             plaintext += letter
 
-    plaintext = list(plaintext)
+    newPlaintext = list(plaintext)
+
     for i, letter in enumerate(ciphertext):
         if not letter.islower():
-            plaintext[i] = plaintext[i].upper()
+            newPlaintext[i] = newPlaintext[i].upper()
 
-    plaintext = "".join(plaintext)
+    plaintext = "".join(newPlaintext)
     return plaintext
