@@ -1,12 +1,13 @@
 import pathlib
-import typing as tp
 import random
+import typing as tp
+import sys
 
 T = tp.TypeVar("T")
 
 
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
-    """ Прочитать Судоку из указанного файла """
+    """Прочитать Судоку из указанного файла"""
     path = pathlib.Path(path)
     with path.open() as f:
         puzzle = f.read()
@@ -20,15 +21,11 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """Вывод Судоку"""
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print(
-            "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
-            )
-        )
+        print("".join(grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)))
         if str(row) in "25":
             print(line)
     print()
@@ -93,7 +90,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     ]
 
     return block
-    
+
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
     """Найти первую свободную позицию в пазле
@@ -122,7 +119,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    nums = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    nums = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
 
     block = get_block(grid, pos)
     column = get_col(grid, pos)
@@ -135,7 +132,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    """ Решение пазла, заданного в grid """
+    """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
         2. Найти все возможные значения, которые могут находиться на этой позиции
@@ -146,28 +143,27 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    if find_empty_positions(grid) == None:
+    if find_empty_positions(grid) is None:
         return grid
 
     pos = find_empty_positions(grid)
-    if pos != None:
+    if pos is not None:
         values = find_possible_values(grid, pos)
         for i in values:
-            if pos != None:
+            if pos is not None:
                 grid[pos[0]][pos[1]] = i
                 solve(grid)
-            if find_empty_positions(grid) == None:
+            if find_empty_positions(grid) is not None:
                 return grid
             else:
-                if pos != None:
+                if pos is not None:
                     grid[pos[0]][pos[1]] = "."
 
     return grid
 
 
-
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
-    """ Если решение solution верно, то вернуть True, в противном случае False """
+    """Если решение solution верно, то вернуть True, в противном случае False"""
     # TODO: Add doctests with bad puzzles
     for i in range(len(solution)):
         for j in range(len(solution)):
@@ -205,16 +201,19 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    grid = solve([["." for _ in range(9)] for _ in range(9)])
+    output = solve([["." for _ in range(9)] for _ in range(9)])
 
     indexes = list(range(81))
+    if indexes is None or output is None:
+        sys.exit()
 
-    for i in range(81-N):
+    for _ in range(81 - N):
         ind = random.choice(indexes)
         indexes.remove(ind)
-        grid[ind//9][ind%9] = '.'
+        output[ind // 9][ind % 9] = "."
 
-    return grid
+    return output
+
 
 if __name__ == "__main__":
     for fname in ["puzzle1.txt", "puzzle2.txt", "puzzle3.txt"]:
