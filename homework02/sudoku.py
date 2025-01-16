@@ -205,8 +205,16 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    grid = solve([["." for _ in range(9)] for _ in range(9)])
 
+    indexes = list(range(81))
+
+    for i in range(81-N):
+        ind = random.choice(indexes)
+        indexes.remove(ind)
+        grid[ind//9][ind%9] = '.'
+
+    return grid
 
 if __name__ == "__main__":
     for fname in ["puzzle1.txt", "puzzle2.txt", "puzzle3.txt"]:
