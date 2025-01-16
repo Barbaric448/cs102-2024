@@ -122,7 +122,16 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    nums = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+
+    block = get_block(grid, pos)
+    column = get_col(grid, pos)
+    row = get_row(grid, pos)
+
+    for i in [block, column, row]:
+        nums = nums.difference(i)
+
+    return nums
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
