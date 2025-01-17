@@ -1,7 +1,7 @@
 import pathlib
 import random
-import typing as tp
 import sys
+import typing as tp
 
 T = tp.TypeVar("T")
 
@@ -101,10 +101,10 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            if grid[i][j] == ".":
-                return i, j
+    for row_index, row in enumerate(grid):
+        for col_index, cell in enumerate(row):
+            if cell == ".":
+                return row_index, col_index
 
     return None
 
@@ -153,11 +153,10 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
             if pos is not None:
                 grid[pos[0]][pos[1]] = i
                 solve(grid)
-            if find_empty_positions(grid) is not None:
+            if find_empty_positions(grid) is None:
                 return grid
-            else:
-                if pos is not None:
-                    grid[pos[0]][pos[1]] = "."
+            if pos is not None:
+                grid[pos[0]][pos[1]] = "."
 
     return grid
 
