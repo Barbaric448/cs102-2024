@@ -120,7 +120,7 @@ class GameOfLife:
         Returns
         ----------
         out : Cells
-                Список соседних клеток.
+               Список соседних клеток.
         """
         neighbours = []
         pos_row, pos_col = cell
